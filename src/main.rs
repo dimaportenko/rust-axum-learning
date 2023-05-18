@@ -1,6 +1,6 @@
 use std::net::SocketAddr;
 
-use axum::response::Html;
+use axum::response::{Html, IntoResponse};
 use axum::routing::get;
 use axum::Router;
 
@@ -9,7 +9,7 @@ async fn main() {
     // 127.0.0.1:8080/hello
     let routes_hello = Router::new().route(
         "/hello",
-        get(|| async { Html("Hello, <strong>World!</strong>") }),
+        get(handler_hello),
     );
 
     // region:    --- Start Server ---
@@ -21,3 +21,10 @@ async fn main() {
         .unwrap();
     // endregion:    --- Start Server ---
 }
+
+async fn handler_hello() -> impl IntoResponse {
+    println!("handler_hello");
+
+    Html("Hello, <strong>World!</strong>")
+}
+
